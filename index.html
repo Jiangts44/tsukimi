@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>月見 - 开场白DIY</title>
+    <style>
+      @import url('https://fontsapi.zeoseven.com/190/main/result.css');
+      :root {
+        --accent-blue: #a8d8f0;
+        --accent-blue-light: #d4f0ff;
+        --accent-pink: #ff99c8;
+        --accent-pink-light: #ffb3d9;
+        --theme-bg: #fff0f5;
+        --widget-bg: rgba(255, 240, 245, 0.85);
+        --text-primary: #785a67;
+        --text-secondary: #a38c96;
+        --shell-border-color: #ff99c836;
+        --shadow-color: rgba(255, 180, 217, 0.2);
+        --input-bg: #ffffff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--accent-blue-light);
+        border-radius: 2px;
+      }
+      body {
+        font-family: '极影毁片圆 Medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+          sans-serif;
+        background-color: var(--theme-bg);
+        color: var(--text-primary);
+        padding: 20px;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+      .container,
+      .preview-container {
+        width: 100%;
+        max-width: 770px;
+        background: var(--widget-bg);
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--shell-border-color);
+        backdrop-filter: blur(15px);
+        display: flex;
+        flex-direction: column;
+      }
+      .preview-container {
+        height: 770px;
+      }
+      h1,
+      h2 {
+        font-weight: 700;
+        background: linear-gradient(90deg, var(--accent-pink), var(--accent-blue));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        border-bottom: 2px dashed var(--accent-blue-light);
+        padding-bottom: 10px;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+      hr {
+        border: 0;
+        border-top: 1px dashed var(--accent-blue-light);
+        margin: 20px 0;
+      }
+      .control-group {
+        margin-bottom: 18px;
+      }
+      label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+      input[type='text'],
+      input[type='number'] {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        font-family: inherit;
+        font-size: 14px;
+        background: var(--input-bg);
+        color: var(--text-primary);
+        outline: none;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 8px rgba(160, 180, 200, 0.4), 0 0 0 3px var(--accent-blue-light);
+      }
+      input[type='text']:focus,
+      input[type='number']:focus {
+        border-color: transparent;
+        box-shadow: 0 0 12px var(--accent-pink), 0 0 0 3px var(--input-bg);
+        color: var(--accent-pink);
+      }
+      .color-input-wrapper {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        align-items: center;
+        gap: 10px;
+      }
+      .color-input-wrapper label {
+        margin-bottom: 0;
+      }
+      input[type='color'] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 40px;
+        background-color: transparent;
+        border: 1px solid var(--accent-blue-light);
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      input[type='color']::-webkit-color-swatch {
+        border-radius: 10px;
+        border: none;
+      }
+      input[type='color']::-moz-color-swatch {
+        border-radius: 10px;
+        border: none;
+      }
+      .btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 700;
+        font-size: 14px;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 8px var(--shadow-color);
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+      }
+      .btn-primary,
+      .btn-success {
+        background: linear-gradient(45deg, var(--accent-pink), var(--accent-blue));
+        color: white;
+      }
+      .btn-danger {
+        background-color: var(--accent-pink-light);
+        color: var(--input-bg);
+        font-weight: 500;
+      }
+      #openings-list-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-right: 10px;
+        min-height: 150px;
+      }
+      .opening-item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+      .opening-item .inputs {
+        flex-grow: 1;
+        display: flex;
+        gap: 10px;
+      }
+      .opening-item input[type='number'] {
+        width: 70px;
+      }
+      .footer-actions {
+        margin-top: 20px;
+        text-align: right;
+      }
+      #ui-preview-iframe {
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--shell-border-color);
+        border-radius: 12px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+      .modal-content {
+        background: var(--widget-bg);
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 4px 25px var(--shadow-color);
+        border: 1px solid var(--shell-border-color);
+        width: 90%;
+        max-width: 700px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px dashed var(--accent-blue-light);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+      .modal-header h2 {
+        margin: 0;
+        border: none;
+        padding-bottom: 0;
+      }
+      .close-btn {
+        color: var(--text-secondary);
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .close-btn:hover {
+        color: var(--accent-pink);
+      }
+      #code-display {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--accent-blue-light);
+        border-radius: 12px;
+        padding: 15px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 60vh;
+        overflow-y: auto;
+        font-family: 'Courier New', Courier, monospace;
+        color: var(--text-primary);
+        flex-grow: 1;
+      }
+      /* --- 新增：美化介绍卡片内部文字 --- */
+      #intro-screen .card-inner p {
+        margin: 0; /* 移除默认间距，方便单独控制 */
+        padding: 8px 0; /* 增加垂直间距 */
+        color: var(--theme-text); /* 默认文字颜色 */
+      }
+
+      /* 第一行：最重要的提示信息 */
+      #intro-screen .card-inner p:first-child {
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--theme-accent); /* 使用强调色 */
+        padding-bottom: 15px;
+      }
+
+      /* 第二行和第三行：次要信息 */
+      #intro-screen .card-inner p:nth-child(2),
+      #intro-screen .card-inner p:nth-child(3) {
+        font-size: 16px;
+        color: var(--theme-highlight); /* 使用高亮色 */
+        opacity: 0.9;
+      }
+
+      /* 最后一行：分隔提示 */
+      #intro-screen .card-inner p:last-child {
+        font-size: 17px;
+        padding-top: 15px;
+        margin-top: 10px;
+        border-top: 1px dashed var(--theme-accent); /* 使用强调色作为分割线 */
+        color: var(--theme-text);
+        opacity: 0.8;
+      }
+      .header-with-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: -10px;
+      }
+
+      #restore-colors-btn {
+        background-color: var(--accent-blue-light);
+        color: var(--text-primary);
+        font-size: 13px;
+        padding: 6px 12px;
+      }
+      .label-with-help {
+        display: flex;
+        align-items: center;
+        gap: 8px; /* 图标和文字的间距 */
+      }
+
+      .help-icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: var(--accent-blue-light);
+        color: var(--text-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      .help-icon:hover {
+        background-color: var(--accent-blue);
+      }
+
+      .help-tooltip {
+        display: none; /* 默认隐藏 */
+        background-color: #fff9fb;
+        border: 1px solid var(--accent-blue-light);
+        border-radius: 8px;
+        padding: 12px;
+        padding-left: 28px; /* 为列表序号留出空间 */
+        margin-top: 8px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        animation: fade-in 0.3s ease;
+      }
+
+      .help-tooltip.active {
+        display: block; /* 点击后显示 */
+      }
+
+      .help-tooltip ol {
+        margin: 0;
+        padding: 0;
+        list-style-position: outside;
+      }
+
+      .help-tooltip li {
+        margin-bottom: 8px;
+      }
+      .help-tooltip li:last-child {
+        margin-bottom: 0;
+      }
+
+      .help-tooltip code {
+        background-color: rgba(0, 0, 0, 0.05);
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-family: 'Courier New', Courier, monospace;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>月見-开场白跳转DIY生成器</h1>
+      <h1>如需使用此模板，请标源保留作者信息</h1>
+      <div class="control-group">
+        <div class="label-with-help">
+          <label for="master-tag">主标签 (例: [开场白列表] 或 &lt;标签名&gt;)【点击？查看使用教程】</label>
+          <div id="help-icon" class="help-icon">?</div>
+        </div>
+        <input type="text" id="master-tag" value="[开场白列表]" />
+        <div id="help-tooltip" class="help-tooltip">
+          <ol>
+            <li>网页自行diy设置开场白条目和全局主题色</li>
+            <li>点击按钮：预览并复制代码</li>
+            <li>
+              酒馆新建正则：<br /><code>&lt;开场白标签名&gt;([\\s\\S]*)&lt;/开场白标签名&gt;</code><br />或者<br /><code
+                >[标签名]([\\s\\S]*)[/标签名]</code
+              >
+            </li>
+            <li>复制代码到替换内容里</li>
+            <li>
+              开场白里填写：<code>&lt;开场白标签名&gt;&lt;/开场白标签名&gt;</code><br />或者<br /><code
+                >[标签名][/标签名]</code
+              >进行调用
+            </li>
+          </ol>
+        </div>
+      </div>
+      <hr />
+      <div class="header-with-button">
+        <h2>全局主题色</h2>
+        <button id="restore-colors-btn" class="btn">恢复默认主题</button>
+      </div>
+      <div class="control-group">
+        <div class="color-input-wrapper">
+          <label>背景色</label>
+          <input type="color" id="color-bg" />
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="color-input-wrapper">
+          <label>文字色</label>
+          <input type="color" id="color-text" />
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="color-input-wrapper">
+          <label>强调色</label>
+          <input type="color" id="color-accent" />
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="color-input-wrapper">
+          <label>高亮色</label>
+          <input type="color" id="color-highlight" />
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="color-input-wrapper">
+          <label>边框色</label>
+          <input type="color" id="color-border" />
+        </div>
+      </div>
+      <hr />
+      <h2>开场白条目管理【字数多了请自行调整正则里.flip-card里小卡片宽高】</h2>
+      <div id="openings-list-container"></div>
+      <button id="add-opening-btn" class="btn btn-success" style="margin-top: 10px; align-self: flex-start">
+        + 添加新条目
+      </button>
+
+      <div class="footer-actions">
+        <button id="preview-code-btn" class="btn btn-primary">预览并复制代码</button>
+      </div>
+    </div>
+
+    <div class="preview-container">
+      <h2>UI实时预览【PC端网页默认最多可视12个开场白】</h2>
+      <h3>调整卡片网格请修改：</h3>
+      <h3>.cards-grid里的grid-template-columns对应的px数值（默认144px）</h3>
+      <iframe id="ui-preview-iframe"></iframe>
+    </div>
+
+    <div id="code-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>生成的HTML代码</h2>
+          <span class="close-btn">&times;</span>
+        </div>
+        <pre id="code-display"></pre>
+        <div class="footer-actions"><button id="copy-code-btn" class="btn btn-success">复制</button></div>
+      </div>
+    </div>
+
+    <template id="opening-item-template">
+      <div class="opening-item">
+        <div class="inputs">
+          <input type="number" class="opening-id" placeholder="ID" min="1" />
+          <input type="text" class="opening-desc" placeholder="开场白描述" />
+        </div>
+        <button class="btn btn-danger delete-opening-btn">删除</button>
+      </div>
+    </template>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const masterTagInput = document.getElementById('master-tag');
+        const openingsContainer = document.getElementById('openings-list-container');
+        const addOpeningBtn = document.getElementById('add-opening-btn');
+        const previewCodeBtn = document.getElementById('preview-code-btn');
+        const uiPreviewIframe = document.getElementById('ui-preview-iframe');
+        const codeModal = document.getElementById('code-modal');
+        const codeDisplay = document.getElementById('code-display');
+        const copyCodeBtn = document.getElementById('copy-code-btn');
+        const closeModalBtn = codeModal.querySelector('.close-btn');
+        const openingTemplate = document.getElementById('opening-item-template');
+        const LOCAL_STORAGE_KEY = 'openingDiyState_V12_Fixed';
+        const restoreColorsBtn = document.getElementById('restore-colors-btn');
+        const colorInputs = {
+          bg: document.getElementById('color-bg'),
+          text: document.getElementById('color-text'),
+          accent: document.getElementById('color-accent'),
+          highlight: document.getElementById('color-highlight'),
+          border: document.getElementById('color-border'),
+        };
+
+        const defaultColors = {
+          bg: '#fff0f5',
+          text: '#785a67',
+          accent: '#ff99c8',
+          highlight: '#a8d8f0',
+          border: '#fff9fb',
+        };
+
+        const saveState = () => {
+          const state = {
+            masterTag: masterTagInput.value,
+            items: getOpeningItemsData(),
+            colors: {
+              bg: colorInputs.bg.value,
+              text: colorInputs.text.value,
+              accent: colorInputs.accent.value,
+              highlight: colorInputs.highlight.value,
+              border: colorInputs.border.value,
+            },
+          };
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+        };
+
+        const loadState = () => {
+          const savedState = localStorage.getItem(LOCAL_STORAGE_KEY);
+          let state = savedState ? JSON.parse(savedState) : {};
+          masterTagInput.value = state.masterTag || '[开场白列表]';
+          const colors = state.colors || defaultColors;
+          for (const key in colorInputs) {
+            colorInputs[key].value = colors[key] || defaultColors[key];
+          }
+          openingsContainer.innerHTML = '';
+          if (state.items && state.items.length > 0) {
+            state.items.forEach(item => addOpeningItem(item));
+          } else {
+            addOpeningItem();
+          }
+          updateUiPreview();
+        };
+
+        const getOpeningItemsData = () =>
+          Array.from(document.querySelectorAll('.opening-item')).map(item => ({
+            id: item.querySelector('.opening-id').value,
+            desc: item.querySelector('.opening-desc').value,
+          }));
+
+        const generateCssVariables = () =>
+          `:root { --theme-bg: ${colorInputs.bg.value}; --theme-text: ${colorInputs.text.value}; --theme-accent: ${colorInputs.accent.value}; --theme-highlight: ${colorInputs.highlight.value}; --theme-border: ${colorInputs.border.value}; }`;
+
+        const generateUiCode = (isFinal = false, userInputTag = '', closingTag = '', dataContent = '') => {
+          const cssVars = generateCssVariables();
+          const itemsHtml = getOpeningItemsData()
+            .map((item, index) => {
+              if (!item.id || !item.desc) return '';
+              return `<div class="flip-card" ontouchstart="this.classList.toggle('hover');">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="card-overlay"></div>
+                                <div class="card-inner">
+                                    <span class="front-id">${item.id}</span>
+                                    <p class="front-desc">${item.desc.replace(/{{user}}/g, '你').trim()}</p>
+                                </div>
+                            </div>
+                            <div class="flip-card-back" data-swipe-id="${item.id}">
+                                <div class="card-overlay"></div>
+                                <div class="card-inner">
+                                    <span class="back-prompt">确认选择</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            })
+            .join('');
+
+          const fullHtml = `
+            <!DOCTYPE html><html lang="zh-CN">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>场景选择</title>
+                <style>
+                    @import url('https://fontsapi.zeoseven.com/190/main/result.css');
+                    ${cssVars}
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body {
+                        font-family: '极影毁片圆 Medium', -apple-system, sans-serif;
+                        background-color: var(--theme-bg);
+                        color: var(--theme-text);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        padding: 20px;
+                        overflow: hidden;
+                    }
+                    .screen { display: none; width: 100%; height: 100%; }
+                    .screen.active { display: flex; justify-content: center; align-items: center; flex-direction: column; }
+                    #intro-screen .intro-card {
+                        --bg: var(--theme-bg); --contrast: var(--theme-border); --grey: var(--theme-highlight);
+                        position: relative; padding: 12px; background-color: var(--bg); border-radius: 35px;
+                        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+                        cursor: pointer; max-width: 400px; animation: fade-in 1s ease-out;
+                    }
+                    #intro-screen .card-overlay { position: absolute; inset: 0; pointer-events: none; background: repeating-conic-gradient(var(--bg) 0.0000001%, var(--grey) 0.000104%) 60% 60%/600% 600%; filter: opacity(10%) contrast(105%); border-radius: 35px; }
+                    #intro-screen .card-inner { padding: 30px; line-height: 1.8; text-align: center; background-color: var(--contrast); border-radius: 25px; }
+                    
+                    /* --- START: 这里是新增的样式 --- */
+                    #intro-screen .card-inner p { margin: 0; padding: 8px 0; color: var(--theme-text); }
+                    #intro-screen .card-inner p:first-child { font-size: 21px; font-weight: 700; color: var(--theme-accent); padding-bottom: 15px; }
+                    #intro-screen .card-inner p:nth-child(2),
+                    #intro-screen .card-inner p:nth-child(3) { font-size: 19px; color: var(--theme-highlight); opacity: 0.9; }
+                    #intro-screen .card-inner p:last-child { font-size: 17px; padding-top: 15px; margin-top: 10px; border-top: 1px dashed var(--theme-accent); opacity: 0.8; }
+                    /* --- END: 这里是新增的样式 --- */
+
+                    #selection-screen { animation: fade-in 0.5s ease-out; }
+                    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(144px, 1fr)); gap: 25px; width: 100%; max-width: 900px; padding: 20px; }
+                    .flip-card { background-color: transparent; width: 144px; height: 159px; perspective: 1000px; }
+                    .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; }
+                    .flip-card:hover .flip-card-inner, .flip-card.hover .flip-card-inner { transform: rotateY(180deg); }
+                    .flip-card-front, .flip-card-back {
+                        --bg: var(--theme-bg); --contrast: var(--theme-border); --grey: var(--theme-highlight);
+                        position: absolute; width: 100%; height: 100%;
+                        -webkit-backface-visibility: hidden; backface-visibility: hidden;
+                        padding: 9px; background-color: var(--bg); border-radius: 35px;
+                        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+                    }
+                    .flip-card-back { transform: rotateY(180deg); cursor: pointer; }
+                    .card-overlay { position: absolute; inset: 0; pointer-events: none; background: repeating-conic-gradient(var(--bg) 0.0000001%, var(--grey) 0.000104%) 60% 60%/600% 600%; filter: opacity(10%) contrast(105%); border-radius: 35px;}
+                    .card-inner { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; background-color: var(--contrast); border-radius: 25px; padding: 15px; text-align: center; font-weight: 500; font-size:19px; }
+                    .front-id { font-size: 2rem; font-weight: 900; color: var(--theme-accent); line-height: 1; margin-bottom: 10px; flex-shrink: 0;}
+                    .front-desc { font-size: 0.9rem; line-height: 1.5; overflow: hidden; }
+                    .back-prompt { font-size: 1.5rem; font-weight: 700; color: var(--theme-accent); }
+                    .loading-overlay, .transition-overlay { position: fixed; inset: 0; z-index: 100; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease; pointer-events: none; opacity: 0; }
+                    .loading-overlay.visible, .transition-overlay.visible { opacity: 1; pointer-events: auto; }
+                    .loading-overlay { background: var(--theme-bg); }
+                    .transition-overlay { background: radial-gradient(circle, var(--theme-accent) 0%, var(--theme-bg) 70%); }
+                    .spinner { width: 40px; height: 40px; position: relative; animation: spinner-spin 2s linear infinite; } 
+                    .spinner-dot { width: 100%; height: 100%; position: absolute; left: 0; top: 0; animation: spinner-bounce 2s ease-in-out infinite; } 
+                    .spinner-dot::before { content: ''; display: block; width: 25%; height: 25%; background-color: var(--theme-highlight); border-radius: 50%; } 
+                    .spinner-dot:nth-child(2) { animation-delay: -1s; } 
+                    @keyframes spinner-spin { 100% { transform: rotate(360deg); } } 
+                    @keyframes spinner-bounce { 0%, 100% { transform: scale(0); } 50% { transform: scale(1); } }
+                    @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                </style>
+            </head>
+            <body>
+                <div id="intro-screen" class="screen active">
+                    <div class="intro-card">
+                        <div class="card-overlay"></div>
+                        <div class="card-inner">
+                            <p>点击卡片选择开场白跳转</p>
+                            <p>此模板由@月見tsukimi唯一发布</p>
+                            <p>唯一获取方式：dc服务器审核后私聊月見</p>
+                            <p>翻页后才是开场白列表</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="selection-screen" class="screen">
+                    <div class="cards-grid">${itemsHtml}</div>
+                </div>
+                <div class="loading-overlay" id="loadingOverlay"><div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div></div></div>
+                <div class="transition-overlay" id="transitionOverlay"></div>
+                <div id="opening-lines-data" style="display: none">${
+                  isFinal ? `${userInputTag}\\n${dataContent}\\n${closingTag}` : ''
+                }</div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const introScreen = document.getElementById('intro-screen');
+                        const selectionScreen = document.getElementById('selection-screen');
+                        if(introScreen) {
+                            introScreen.addEventListener('click', () => {
+                                introScreen.classList.remove('active');
+                                selectionScreen.classList.add('active');
+                            });
+                        }
+                        ${
+                          isFinal
+                            ? `mainApp(typeof getChatMessages !== 'undefined');`
+                            : `
+                        document.querySelectorAll('.flip-card-back').forEach(card => {
+                            card.addEventListener('click', () => {
+                                //alert('跳转到开场白 ID: ' + card.dataset.swipeId);
+                            });
+                        });`
+                        }
+                    });
+                    ${
+                      isFinal
+                        ? `
+                    function mainApp(isApiReady) {
+                        if (!isApiReady) {
+                           document.getElementById('loadingOverlay').classList.add('visible');
+                           return;
+                        }
+                        document.querySelectorAll('.flip-card-back').forEach(card => {
+                            card.addEventListener('click', () => {
+                                const swipeId = parseInt(card.dataset.swipeId, 10);
+                                switchToNarrative(swipeId);
+                            });
+                        });
+                    }
+                    async function switchToNarrative(swipeId) {
+                        const transitionOverlay = document.getElementById('transitionOverlay');
+                        transitionOverlay.innerHTML = \`<div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div></div>\`;
+                        transitionOverlay.classList.add('visible');
+                        try {
+                            const messages = await getChatMessages('0', { include_swipe: true });
+                            if (messages && messages[0].swipes && messages[0].swipes[swipeId]) {
+                                await setChatMessage(messages[0].swipes[swipeId], 0, { swipe_id: swipeId, refresh: 'display_and_render_current' });
+                            } else { throw new Error(\`无法找到ID为 \${swipeId} 的开场白。\`); }
+                        } catch (error) {
+                            console.error('切换开场白失败:', error);
+                            transitionOverlay.classList.remove('visible');
+                            alert(\`切换失败: \${error.message}\`);
+                        }
+                    }`
+                        : ''
+                    }
+                <\/script>
+            </body>
+            </html>`;
+          return fullHtml;
+        };
+
+        const generateSimplePreviewHtml = () => {
+          return generateUiCode(false);
+        };
+
+        const generateFinalCode = (wrapInMarkdown = false) => {
+          const userInputTag = masterTagInput.value.trim();
+          if (!userInputTag) {
+            alert('主标签不能为空！');
+            return null;
+          }
+          let closingTag = userInputTag
+            .replace(/^<|^\[/, match => match + '/')
+            .replace(/>$/, '>')
+            .replace(/]$/, ']');
+          if (userInputTag === closingTag && userInputTag.length > 0) {
+            closingTag = `/${userInputTag}`;
+          }
+          let dataContent = '';
+          getOpeningItemsData().forEach(item => {
+            if (item.id && item.desc) {
+              dataContent += `${item.id}: ${item.desc}\\n`;
+            }
+          });
+          dataContent = dataContent.trim();
+
+          const finalHTML = generateUiCode(true, userInputTag, closingTag, dataContent);
+          if (wrapInMarkdown) {
+            return `\`\`\`html\n${finalHTML.trim()}\n\`\`\``;
+          }
+          return finalHTML.trim();
+        };
+
+        const updateUiPreview = () => {
+          const code = generateSimplePreviewHtml();
+          if (uiPreviewIframe) {
+            const iframeDoc = uiPreviewIframe.contentDocument || uiPreviewIframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(code);
+            iframeDoc.close();
+          }
+        };
+
+        const showCodePreview = () => {
+          const code = generateFinalCode(true);
+          if (code) {
+            codeDisplay.textContent = code;
+            codeModal.style.display = 'block';
+          }
+        };
+
+        const addOpeningItem = (itemData = { id: '', desc: '' }) => {
+          const newItemFragment = openingTemplate.content.cloneNode(true);
+          const newItem = newItemFragment.querySelector('.opening-item');
+          newItem.querySelector('.opening-id').value = itemData.id;
+          newItem.querySelector('.opening-desc').value = itemData.desc;
+          newItem.querySelector('.delete-opening-btn').addEventListener('click', () => {
+            newItem.remove();
+            saveAndRefresh();
+          });
+          openingsContainer.appendChild(newItem);
+        };
+
+        const saveAndRefresh = () => {
+          saveState();
+          updateUiPreview();
+        };
+
+        addOpeningBtn.addEventListener('click', () => {
+          addOpeningItem();
+          saveAndRefresh();
+        });
+        document.querySelector('.container').addEventListener('input', saveAndRefresh);
+        previewCodeBtn.addEventListener('click', showCodePreview);
+        closeModalBtn.addEventListener('click', () => (codeModal.style.display = 'none'));
+        copyCodeBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(codeDisplay.textContent).then(
+            () => alert('代码已复制到剪贴板！'),
+            () => alert('复制失败，请手动操作。'),
+          );
+        });
+        window.addEventListener('click', e => {
+          if (e.target === codeModal) codeModal.style.display = 'none';
+        });
+
+        previewCodeBtn.addEventListener('click', showCodePreview);
+        closeModalBtn.addEventListener('click', () => (codeModal.style.display = 'none'));
+        copyCodeBtn.addEventListener('click', () => {});
+        window.addEventListener('click', e => {
+          if (e.target === codeModal) codeModal.style.display = 'none';
+        });
+
+        const restoreDefaultColors = () => {
+          for (const key in defaultColors) {
+            if (colorInputs.hasOwnProperty(key)) {
+              colorInputs[key].value = defaultColors[key];
+            }
+          }
+          saveAndRefresh();
+        };
+        restoreColorsBtn.addEventListener('click', restoreDefaultColors);
+
+        const helpIcon = document.getElementById('help-icon');
+        const helpTooltip = document.getElementById('help-tooltip');
+
+        helpIcon.addEventListener('click', event => {
+          event.stopPropagation(); // 防止点击事件冒泡
+          helpTooltip.classList.toggle('active');
+        });
+
+        // 点击页面其他地方也可以关闭说明
+        document.addEventListener('click', event => {
+          if (!helpTooltip.contains(event.target) && !helpIcon.contains(event.target)) {
+            helpTooltip.classList.remove('active');
+          }
+        });
+        loadState();
+      });
+    </script>
+  </body>
+</html>
